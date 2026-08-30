@@ -7,28 +7,28 @@ class PolicyRules:
         """
         Evaluates deterministic business policy rules.
         Returns (risk_level, rules_applied).
-        risk_level can be: 'low', 'medium', 'high'.
+        risk_level options: 'low', 'medium', 'high'.
         """
         rules_applied = []
 
         if category == "invoice":
-            amount = extracted_fields.get("amount", 0.0)
-            vendor = extracted_fields.get("vendor", "Unknown Vendor")
+            amount = extracted_fields.get("amount")
+            vendor = extracted_fields.get("vendor", "MISSING_VENDOR")
 
             # Policy Rule 1: Unknown vendor check
-            if vendor == "Unknown Vendor":
-                rules_applied.append("RULE_UNKNOWN_VENDOR: Vendor identity unverified")
+            if vendor in ["MISSING_VENDOR", "Unknown Vendor", "Unknown"]:
+                rules_applied.append("RULE_UNKNOWN_VENDOR: Vendor identity unverified or missing")
                 return "high", rules_applied
 
-            # Policy Rule 2: Amount threshold check
+            # Policy Rule 2: Invalid or missing amount check
+            if amount is None or amount <= 0.0:
+                rules_applied.append("RULE_INVALID_AMOUNT: Invoice amount is missing or zero")
+                return "high", rules_applied
+
+            # Policy Rule 3: Amount threshold check
             if amount > settings.AUTO_APPROVE_MAX_AMOUNT:
                 rules_applied.append(f"RULE_HIGH_AMOUNT: Invoice amount (${amount:.2f}) exceeds auto-approval limit (${settings.AUTO_APPROVE_MAX_AMOUNT:.2f})")
                 return "medium", rules_applied
-
-            # Policy Rule 3: Missing amount check
-            if amount <= 0.0:
-                rules_applied.append("RULE_INVALID_AMOUNT: Invoice amount is zero or unextracted")
-                return "high", rules_applied
 
             rules_applied.append("RULE_PASSED: Invoice meets standard policy thresholds")
             return "low", rules_applied
@@ -43,5 +43,5 @@ class PolicyRules:
             return "low", rules_applied
 
         else:
-            rules_applied.append("RULE_UNRECOGNIZED_CATEGORY: Unclassified task category")
+            rules_applied.append("RULE_UNRECOGNIZED_CATEGORY: Unclassified task category or out-of-domain input")
             return "high", rules_applied
