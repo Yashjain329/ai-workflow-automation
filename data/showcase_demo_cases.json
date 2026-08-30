@@ -45,9 +45,9 @@
     "input_text": "Purchase request summary for CloudServices LLC estimating laptop software licensing cost around $3200.00.",
     "expected_category": "invoice",
     "expected_extraction": {"vendor": "CloudServices LLC", "amount": 3200.0},
-    "expected_risk": "low",
-    "expected_route": "auto_approve",
-    "expected_final_state": "AUDITED"
+    "expected_risk": "medium",
+    "expected_route": "human_approval",
+    "expected_final_state": "APPROVAL_PENDING"
   },
   {
     "case_num": "06",

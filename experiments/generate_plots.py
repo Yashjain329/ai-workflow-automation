@@ -36,17 +36,17 @@ def generate_research_plots():
         plt.close()
         print(f"Plot 1 saved: '{plot1_path}'")
 
-    # 2. Robustness Degradation Curve
+    # 2. Multi-Dimensional Robustness Degradation Curve
     rob_csv = os.path.join(results_dir, "robustness_metrics.csv")
     if os.path.exists(rob_csv):
         df_rob = pd.read_csv(rob_csv)
-        fig, ax1 = plt.subplots(figsize=(8, 5), dpi=300)
+        fig, ax1 = plt.subplots(figsize=(10, 5), dpi=300)
 
-        noise_labels = ["0% (Clean)", "10% Noise", "20% Noise", "30% Noise"]
+        labels = [f"{row['Perturbation Type'][:10]}\n{row['Perturbation Level']}" for _, row in df_rob.iterrows()]
         x_indices = range(len(df_rob))
 
         color = '#2563eb'
-        ax1.set_xlabel('Character Perturbation Level', fontsize=11, fontweight='bold')
+        ax1.set_xlabel('Perturbation Condition', fontsize=11, fontweight='bold')
         ax1.set_ylabel('Accuracy / Macro F1 (%)', color=color, fontsize=11, fontweight='bold')
         l1 = ax1.plot(x_indices, df_rob['Accuracy (%)'], marker='o', color='#2563eb', linewidth=2.5, label='Classification Accuracy')
         l2 = ax1.plot(x_indices, df_rob['Macro F1 (%)'], marker='s', color='#7c3aed', linewidth=2, linestyle='--', label='Macro F1-Score')
@@ -61,12 +61,12 @@ def generate_research_plots():
         ax2.set_ylim(0.50, 1.05)
 
         lines = l1 + l2 + l3
-        labels = [l.get_label() for l in lines]
-        ax1.legend(lines, labels, loc='lower left', frameon=True)
+        labels_leg = [l.get_label() for l in lines]
+        ax1.legend(lines, labels_leg, loc='lower left', frameon=True)
 
-        plt.title('Robustness & Uncertainty Degradation Under Character Noise', fontsize=12, fontweight='bold')
-        ax1.set_xticks(x_indices)
-        ax1.set_xticklabels(noise_labels, fontsize=10)
+        plt.title('Multi-Dimensional Robustness & Uncertainty Degradation', fontsize=12, fontweight='bold')
+        ax1.set_xticks(list(x_indices))
+        ax1.set_xticklabels(labels, fontsize=9)
         plt.tight_layout()
         plot2_path = os.path.join(plots_dir, "robustness_degradation_curve.png")
         plt.savefig(plot2_path)

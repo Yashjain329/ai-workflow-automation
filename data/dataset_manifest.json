@@ -1,21 +1,23 @@
 {
-  "dataset_version": "v1.0_large_scale",
+  "dataset_version": "v1.0_realistic_hardened",
   "random_seed": 42,
   "total_records": 3000,
   "train_records": 2100,
   "validation_records": 450,
   "test_records": 450,
   "class_distribution": {
-    "invoice": 1328,
-    "service_request": 1393,
-    "unknown": 279
+    "invoice": 1358,
+    "service_request": 1366,
+    "unknown": 276
   },
-  "quality_classes": [
-    "clean",
-    "paraphrased",
-    "noisy",
-    "incomplete",
-    "ambiguous",
-    "out_of_domain"
-  ]
+  "quality_distribution": {
+    "clean": 918,
+    "implicit": 680,
+    "ambiguous": 131,
+    "noisy": 330,
+    "paraphrased": 435,
+    "incomplete": 230,
+    "out_of_domain": 276
+  },
+  "methodology_note": "Includes implicit invoices, procurement phrasing, ambiguous mixed-intent tasks, and OOD distractors."
 }

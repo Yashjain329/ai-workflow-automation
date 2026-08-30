@@ -4,11 +4,11 @@
   "total_test_samples": 450,
   "classification_accuracy": 1.0,
   "macro_f1": 1.0,
-  "vendor_extraction_accuracy": 76.41,
+  "vendor_extraction_accuracy": 92.06,
   "amount_extraction_accuracy": 100.0,
-  "safe_auto_approval_rate": 0.2711,
-  "unsafe_auto_count": 114,
+  "safe_auto_approval_rate": 0.2778,
+  "unsafe_auto_count": 52,
   "ood_unsafe_auto_count": 0,
-  "p95_latency_ms": 23.16,
-  "timestamp": "2026-08-30 21:11:45"
+  "p95_latency_ms": 22.14,
+  "timestamp": "2026-08-30 21:23:24"
 }

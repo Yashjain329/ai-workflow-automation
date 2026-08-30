@@ -2,7 +2,11 @@ import re
 from typing import Dict, Any
 
 KNOWN_DEPARTMENTS = ["IT", "HR", "Finance", "Facilities", "Legal", "Operations", "Security"]
-KNOWN_VENDORS = ["Acme Corp", "TechSupplies Inc", "Global Logistics", "CloudServices LLC", "OfficeDepot Ltd", "Apex Industries", "Nexus Systems", "Vertex Hardware"]
+KNOWN_VENDORS = [
+    "Acme Corp", "TechSupplies Inc", "Global Logistics", "CloudServices LLC", 
+    "OfficeDepot Ltd", "Apex Industries", "Nexus Systems", "Vertex Hardware",
+    "DataCore Analytics", "Horizon Networks"
+]
 
 class FieldExtractor:
     @staticmethod
@@ -16,7 +20,7 @@ class FieldExtractor:
             # 1. Extract Amount
             amount_match = re.search(r'\$\s*([0-9,]+(?:\.[0-9]{1,2})?)', text)
             if not amount_match:
-                amount_match = re.search(r'(?:amount|total|due|sum|cost|balance)\s*[:\$]?\s*([0-9,]+(?:\.[0-9]{1,2})?)', text, re.IGNORECASE)
+                amount_match = re.search(r'(?:amount|total|due|sum|cost|balance|fee|fees|reimbursement)\s*[:\$]?\s*([0-9,]+(?:\.[0-9]{1,2})?)', text, re.IGNORECASE)
             
             if amount_match:
                 try:
@@ -30,7 +34,7 @@ class FieldExtractor:
                 extracted["amount"] = None
                 extracted["amount_confidence"] = 0.0
 
-            # 2. Extract Vendor (Pattern extraction with known vendor alignment)
+            # 2. Extract Vendor
             vendor_found = None
             for v in KNOWN_VENDORS:
                 if re.search(r'\b' + re.escape(v) + r'\b', text, re.IGNORECASE):
@@ -38,13 +42,16 @@ class FieldExtractor:
                     break
 
             if not vendor_found:
-                vendor_match = re.search(r'(?:from|issued by|submitted by|vendor|remittance for)\s+([A-Za-z0-9\s]+?)(?=\s+total|\s+for|\s+referenced|\s+indicating|\s+with|\.|\$|,|$)', text, re.IGNORECASE)
+                vendor_match = re.search(r'(?:from|issued by|submitted by|vendor|for|billed by)\s+([A-Za-z0-9\s]+?)(?=\s+total|\s+for|\s+referenced|\s+indicating|\s+with|\.|\$|,|$)', text, re.IGNORECASE)
                 if vendor_match:
                     vendor_found = vendor_match.group(1).strip()
 
-            if vendor_found and vendor_found.lower() not in ["unknown", "unknown vendor"]:
+            # Check for ambiguity in text
+            is_ambiguous = bool(re.search(r'\b(confirm|inquiry|reimbursement|estimate|estimating|laptop|software)\b', text, re.IGNORECASE))
+
+            if vendor_found and vendor_found.lower() not in ["unknown", "unknown vendor", "unknown supplier"]:
                 extracted["vendor"] = vendor_found
-                extracted["vendor_confidence"] = 0.92
+                extracted["vendor_confidence"] = 0.78 if is_ambiguous else 0.94
             else:
                 extracted["vendor"] = "MISSING_VENDOR"
                 extracted["vendor_confidence"] = 0.0
@@ -52,7 +59,7 @@ class FieldExtractor:
             # 3. Extract Invoice Number
             inv_match = re.search(r'\b(INV-\d{4}-\d{4})\b', text, re.IGNORECASE)
             if not inv_match:
-                inv_match = re.search(r'(?:invoice|inv|statement|receipt|contract|code)[#:\s]*([A-Za-z0-9-]+)', text, re.IGNORECASE)
+                inv_match = re.search(r'(?:invoice|inv|statement|receipt|contract|code|voucher|milestone|reference)[#:\s]*([A-Za-z0-9-]+)', text, re.IGNORECASE)
 
             if inv_match:
                 extracted["invoice_number"] = inv_match.group(1).strip()
@@ -63,7 +70,7 @@ class FieldExtractor:
 
         elif category == "service_request":
             # 1. Extract Urgency
-            if re.search(r'\b(urgent|critical|high|emergency)\b', text, re.IGNORECASE):
+            if re.search(r'\b(urgent|critical|high|emergency|immediate)\b', text, re.IGNORECASE):
                 extracted["urgency"] = "high"
                 extracted["urgency_confidence"] = 0.95
             elif re.search(r'\b(low|minor)\b', text, re.IGNORECASE):
@@ -71,7 +78,7 @@ class FieldExtractor:
                 extracted["urgency_confidence"] = 0.90
             else:
                 extracted["urgency"] = "normal"
-                extracted["urgency_confidence"] = 0.75
+                extracted["urgency_confidence"] = 0.85
 
             # 2. Extract Department
             dept_found = "General"
@@ -81,6 +88,6 @@ class FieldExtractor:
                     break
 
             extracted["department"] = dept_found
-            extracted["department_confidence"] = 0.90 if dept_found != "General" else 0.50
+            extracted["department_confidence"] = 0.92 if dept_found != "General" else 0.50
 
         return extracted

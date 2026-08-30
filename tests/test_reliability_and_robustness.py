@@ -41,27 +41,63 @@ def test_idempotency_duplicate_prevention():
     assert is_dup2 == True
     assert "IDEMPOTENT_SKIPPED" in r2
 
-def test_transient_failure_and_retry_exhaustion():
+def test_database_transient_failure_and_retry():
     db = SessionLocal()
-    
-    # 1. Test Transient Failure recovering on Attempt 3
     DatabaseConnector.clear_idempotency_cache()
     DatabaseConnector.set_failure_mode("TRANSIENT_FAILURE")
+    NotificationConnector.set_failure_mode("NORMAL")
+
     payload = JobCreate(source="test", raw_payload="Please find attached the billing statement INV-2026-9999 from TechSupplies Inc totaling $350.00 for deliverables.")
-    job1 = create_job(payload, db)
-    assert job1.status == "AUDITED"
-    logs = db.query(ActionLog).filter(ActionLog.job_id == job1.job_id, ActionLog.connector == "database_connector").all()
+    job = create_job(payload, db)
+    assert job.status == "AUDITED"
+
+    logs = db.query(ActionLog).filter(ActionLog.job_id == job.job_id, ActionLog.connector == "database_connector").all()
     assert len(logs) >= 3 # Retried twice then succeeded on 3rd attempt!
 
-    # 2. Test Permanent Failure exhausting all 3 attempts
+    DatabaseConnector.set_failure_mode("NORMAL")
+    db.close()
+
+def test_database_permanent_failure_exhaustion():
+    db = SessionLocal()
     DatabaseConnector.clear_idempotency_cache()
     DatabaseConnector.set_failure_mode("PERMANENT_FAILURE")
-    payload2 = JobCreate(source="test", raw_payload="Statement of account issued by CloudServices LLC for reference INV-2026-8888. Total balance payable: $450.00.")
-    job2 = create_job(payload2, db)
-    assert job2.status == "FAILED"
-    assert job2.error_code == "ERR_PERMANENT"
+
+    payload = JobCreate(source="test", raw_payload="Statement of account issued by CloudServices LLC for reference INV-2026-8888. Total balance payable: $450.00.")
+    job = create_job(payload, db)
+    assert job.status == "FAILED"
+    assert job.error_code == "ERR_PERMANENT"
 
     DatabaseConnector.set_failure_mode("NORMAL")
+    db.close()
+
+def test_notification_transient_failure_and_retry():
+    db = SessionLocal()
+    DatabaseConnector.clear_idempotency_cache()
+    DatabaseConnector.set_failure_mode("NORMAL")
+    NotificationConnector.set_failure_mode("TRANSIENT_FAILURE")
+
+    payload = JobCreate(source="test", raw_payload="Commercial receipt INV-2026-3311 submitted by Apex Industries. Amount payable: $620.00.")
+    job = create_job(payload, db)
+    assert job.status == "AUDITED"
+
+    mail_logs = db.query(ActionLog).filter(ActionLog.job_id == job.job_id, ActionLog.connector == "notification_connector").all()
+    assert len(mail_logs) >= 3 # Retried twice then succeeded on 3rd attempt!
+
+    NotificationConnector.set_failure_mode("NORMAL")
+    db.close()
+
+def test_notification_permanent_failure_exhaustion():
+    db = SessionLocal()
+    DatabaseConnector.clear_idempotency_cache()
+    DatabaseConnector.set_failure_mode("NORMAL")
+    NotificationConnector.set_failure_mode("NOTIFICATION_FAILURE")
+
+    payload = JobCreate(source="test", raw_payload="Statement of account issued by Global Logistics for reference INV-2026-1122. Total balance payable: $750.00.")
+    job = create_job(payload, db)
+    assert job.status == "FAILED"
+    assert job.error_code == "ERR_SMTP_GATEWAY"
+
+    NotificationConnector.set_failure_mode("NORMAL")
     db.close()
 
 def test_ood_out_of_domain_handling():

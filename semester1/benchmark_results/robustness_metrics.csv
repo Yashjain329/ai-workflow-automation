@@ -1,5 +1,8 @@
-Perturbation Level,Accuracy (%),Macro F1 (%),Macro Precision (%),Macro Recall (%),Avg AI Confidence
-0% (Clean Baseline),100.0,100.0,100.0,100.0,0.97
-10% Character Noise,100.0,100.0,100.0,100.0,0.91
-20% Character Noise,99.33,98.94,99.53,98.38,0.81
-30% Character Noise,94.67,93.02,94.89,91.51,0.72
+Perturbation Type,Perturbation Level,Accuracy (%),Macro F1 (%),Macro Precision (%),Macro Recall (%),Avg AI Confidence
+0% Clean Baseline,None,100.0,100.0,100.0,100.0,0.96
+Character Typo Noise,10%,100.0,100.0,100.0,100.0,0.9
+Character Typo Noise,20%,98.67,97.29,99.04,95.83,0.83
+Character Typo Noise,30%,96.22,92.69,97.28,89.81,0.75
+Word Dropout / Deletion,10%,100.0,100.0,100.0,100.0,0.93
+Word Dropout / Deletion,20%,100.0,100.0,100.0,100.0,0.91
+Word Dropout / Deletion,30%,100.0,100.0,100.0,100.0,0.89
