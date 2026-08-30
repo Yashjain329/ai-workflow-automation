@@ -1,0 +1,102 @@
+[
+  {
+    "case_num": "01",
+    "title": "Normal Invoice < $5000",
+    "input_text": "Please find attached the billing statement INV-2026-1001 from Acme Corp totaling $2450.00 for hardware components.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "Acme Corp", "amount": 2450.0, "invoice_number": "INV-2026-1001"},
+    "expected_risk": "low",
+    "expected_route": "auto_approve",
+    "expected_final_state": "AUDITED"
+  },
+  {
+    "case_num": "02",
+    "title": "High-Value Invoice > $5000",
+    "input_text": "Statement of account issued by TechSupplies Inc for reference INV-2026-9022. Total balance payable: $14850.00.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "TechSupplies Inc", "amount": 14850.0, "invoice_number": "INV-2026-9022"},
+    "expected_risk": "medium",
+    "expected_route": "human_approval",
+    "expected_final_state": "APPROVAL_PENDING"
+  },
+  {
+    "case_num": "03",
+    "title": "Missing Invoice Amount",
+    "input_text": "Invoice payment notification from Global Logistics on invoice code INV-2026-4401 with unstated total amount.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "Global Logistics", "amount": null, "invoice_number": "INV-2026-4401"},
+    "expected_risk": "high",
+    "expected_route": "human_approval",
+    "expected_final_state": "APPROVAL_PENDING"
+  },
+  {
+    "case_num": "04",
+    "title": "Unknown Vendor Invoice",
+    "input_text": "Payment remittance required for Unknown Supplier regarding INV-2026-8812 in the amount of $1800.00.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "MISSING_VENDOR", "amount": 1800.0, "invoice_number": "INV-2026-8812"},
+    "expected_risk": "high",
+    "expected_route": "human_approval",
+    "expected_final_state": "APPROVAL_PENDING"
+  },
+  {
+    "case_num": "05",
+    "title": "Ambiguous Cross-Domain Request",
+    "input_text": "Purchase request summary for CloudServices LLC estimating laptop software licensing cost around $3200.00.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "CloudServices LLC", "amount": 3200.0},
+    "expected_risk": "low",
+    "expected_route": "auto_approve",
+    "expected_final_state": "AUDITED"
+  },
+  {
+    "case_num": "06",
+    "title": "Normal Support Request",
+    "input_text": "Staff assistance request regarding VPN authentication failure during remote login. Please route to IT team.",
+    "expected_category": "service_request",
+    "expected_extraction": {"department": "IT", "urgency": "normal"},
+    "expected_risk": "low",
+    "expected_route": "auto_approve",
+    "expected_final_state": "AUDITED"
+  },
+  {
+    "case_num": "07",
+    "title": "High-Priority Urgent Ticket",
+    "input_text": "Employee inquiry directed to Security: Keycard badge reader malfunctioning at building entrance. Requires assistance with urgent priority.",
+    "expected_category": "service_request",
+    "expected_extraction": {"department": "Security", "urgency": "high"},
+    "expected_risk": "medium",
+    "expected_route": "human_approval",
+    "expected_final_state": "APPROVAL_PENDING"
+  },
+  {
+    "case_num": "08",
+    "title": "Out-of-Domain (OOD) Query",
+    "input_text": "What is the speed of light in vacuum in meters per second?",
+    "expected_category": "unknown",
+    "expected_extraction": {},
+    "expected_risk": "high",
+    "expected_route": "human_approval",
+    "expected_final_state": "APPROVAL_PENDING"
+  },
+  {
+    "case_num": "09",
+    "title": "Noisy Typo-Perturbed Input",
+    "input_text": "Bikling statemnt INV-2026-3392 - Acme Corp sm $1250.00 ext noise.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "Acme Corp", "amount": 1250.0},
+    "expected_risk": "low",
+    "expected_route": "auto_approve",
+    "expected_final_state": "AUDITED"
+  },
+  {
+    "case_num": "10",
+    "title": "Transient Connector Failure & Retry",
+    "input_text": "Please process payment for statement INV-2026-7731 from OfficeDepot Ltd in the amount of $450.00.",
+    "expected_category": "invoice",
+    "expected_extraction": {"vendor": "OfficeDepot Ltd", "amount": 450.0},
+    "expected_risk": "low",
+    "expected_route": "auto_approve",
+    "expected_final_state": "AUDITED"
+  }
+]

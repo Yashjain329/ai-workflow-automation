@@ -1,0 +1,2 @@
+vendor_accuracy,amount_accuracy,amount_mean_rel_error,invoice_number_accuracy,department_accuracy,urgency_accuracy
+76.41025641025641,100.0,0.0,60.0,100.0,80.38277511961722

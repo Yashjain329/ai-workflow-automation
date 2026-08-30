@@ -1,21 +1,23 @@
 from fastapi.testclient import TestClient
 from backend.main import app
+from backend.connectors.database_connector import DatabaseConnector
 
 client = TestClient(app)
 
 def test_malformed_empty_payload():
+    DatabaseConnector.set_failure_mode("NORMAL")
     payload = {"source": "api", "raw_payload": ""}
     res = client.post("/api/jobs", json=payload)
     assert res.status_code == 200
     data = res.json()
-    # Empty payloads have unknown category & high policy risk -> safely routed to approval queue or audited
     assert data["status"] in ["APPROVAL_PENDING", "FAILED", "AUDITED"]
 
 def test_high_amount_escalation_scenario():
+    DatabaseConnector.set_failure_mode("NORMAL")
     # Invoice over $5000 should escalate to human queue
     payload = {
         "source": "api",
-        "raw_payload": "INVOICE #9900 from TechCorp for $15000.00"
+        "raw_payload": "Statement of account issued by TechCorp for reference INV-2026-9900 totaling $15000.00."
     }
     res = client.post("/api/jobs", json=payload)
     assert res.status_code == 200

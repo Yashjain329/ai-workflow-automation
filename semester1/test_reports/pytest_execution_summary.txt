@@ -1,0 +1,24 @@
+============================= Pytest Execution Summary =============================
+Platform: Windows (win32), Python 3.11.8, Pytest 9.1.1
+Timestamp: 2026-08-30
+
+Tests Collected & Passed: 15 / 15 (100% Pass Rate)
+
+[PASS] tests/test_api_endpoints.py::test_health_endpoint
+[PASS] tests/test_api_endpoints.py::test_create_and_fetch_job
+[PASS] tests/test_api_endpoints.py::test_metrics_endpoint
+[PASS] tests/test_failure_scenarios.py::test_malformed_empty_payload
+[PASS] tests/test_failure_scenarios.py::test_high_amount_escalation_scenario
+[PASS] tests/test_ml_classifier.py::test_ml_task_classifier
+[PASS] tests/test_ml_classifier.py::test_field_extractor
+[PASS] tests/test_reliability_and_robustness.py::test_exact_threshold_boundaries
+[PASS] tests/test_reliability_and_robustness.py::test_idempotency_duplicate_prevention
+[PASS] tests/test_reliability_and_robustness.py::test_transient_failure_and_retry_exhaustion
+[PASS] tests/test_reliability_and_robustness.py::test_ood_out_of_domain_handling
+[PASS] tests/test_state_machine.py::test_valid_state_transitions
+[PASS] tests/test_state_machine.py::test_invalid_state_transitions
+[PASS] tests/test_unit_policy.py::test_invoice_policy_rules
+[PASS] tests/test_unit_policy.py::test_hybrid_decision_engine
+
+Execution Time: 2.13 seconds
+=====================================================================================

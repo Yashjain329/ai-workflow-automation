@@ -1,0 +1,21 @@
+{
+  "dataset_version": "v1.0_large_scale",
+  "random_seed": 42,
+  "total_records": 3000,
+  "train_records": 2100,
+  "validation_records": 450,
+  "test_records": 450,
+  "class_distribution": {
+    "invoice": 1328,
+    "service_request": 1393,
+    "unknown": 279
+  },
+  "quality_classes": [
+    "clean",
+    "paraphrased",
+    "noisy",
+    "incomplete",
+    "ambiguous",
+    "out_of_domain"
+  ]
+}
