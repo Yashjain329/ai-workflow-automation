@@ -1,0 +1,417 @@
+[
+  {
+    "sample_id": "SAMP-0145",
+    "text": "Purchase request summary for TechSupplies Inc estimating cost around $2261.35 for upcoming project.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "TechSupplies Inc",
+      "amount": 2261.35,
+      "invoice_number": "INV-2026-6089"
+    },
+    "difficulty": "ambiguous"
+  },
+  {
+    "sample_id": "SAMP-0172",
+    "text": "SUPPORT TICKET [HR]: Laptop screen flicker and battery power failure. Urgency level: LOW. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "low"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0006",
+    "text": "SUPPORT TICKET [Finance]: HVAC air conditioning repair on floor 4. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Finance",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0122",
+    "text": "SUPPORT TICKET [HR]: Laptop screen flicker and battery power failure. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0026",
+    "text": "SUPPORT TICKET [Facilities]: Software license key request for PyCharm Pro. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0082",
+    "text": "SUPPORT TICKET [IT]: Laptop screen flicker and battery power failure. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "IT",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0019",
+    "text": "Bill receipt INV-2026-3721 - Global Logistics sum $4105.48 text with extraneous characters #$%^.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "Global Logistics",
+      "amount": 4105.48,
+      "invoice_number": "INV-2026-3721"
+    },
+    "difficulty": "noisy"
+  },
+  {
+    "sample_id": "SAMP-0168",
+    "text": "INVOICE #INV-2026-5611 from CloudServices LLC. Total Amount Due: $10240.47. Remit payment to finance department.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "CloudServices LLC",
+      "amount": 10240.47,
+      "invoice_number": "INV-2026-5611"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0059",
+    "text": "SUPPORT TICKET [Finance]: HVAC air conditioning repair on floor 4. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Finance",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0140",
+    "text": "Bill receipt INV-2026-9665 - TechSupplies Inc sum $4772.72 text with extraneous characters #$%^.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "TechSupplies Inc",
+      "amount": 4772.72,
+      "invoice_number": "INV-2026-9665"
+    },
+    "difficulty": "noisy"
+  },
+  {
+    "sample_id": "SAMP-0108",
+    "text": "SUPPORT TICKET [Finance]: Need password reset for corporate email account. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Finance",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0143",
+    "text": "SUPPORT TICKET [HR]: Laptop screen flicker and battery power failure. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0047",
+    "text": "Purchase request summary for Global Logistics estimating cost around $6834.87 for upcoming project.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "Global Logistics",
+      "amount": 6834.87,
+      "invoice_number": "INV-2026-6859"
+    },
+    "difficulty": "ambiguous"
+  },
+  {
+    "sample_id": "SAMP-0056",
+    "text": "Purchase request summary for OfficeDepot Ltd estimating cost around $3997.40 for upcoming project.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "OfficeDepot Ltd",
+      "amount": 3997.4,
+      "invoice_number": "INV-2026-3899"
+    },
+    "difficulty": "ambiguous"
+  },
+  {
+    "sample_id": "SAMP-0090",
+    "text": "SUPPORT TICKET [IT]: Request access to financial quarterly report folder. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "IT",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0092",
+    "text": "SUPPORT TICKET [Facilities]: Software license key request for PyCharm Pro. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0116",
+    "text": "SUPPORT TICKET [Facilities]: HVAC air conditioning repair on floor 4. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0003",
+    "text": "INVOICE #INV-2026-4325 from TechSupplies Inc. Total Amount Due: $10877.57. Remit payment to finance department.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "TechSupplies Inc",
+      "amount": 10877.57,
+      "invoice_number": "INV-2026-4325"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0199",
+    "text": "SUPPORT TICKET [IT]: HVAC air conditioning repair on floor 4. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "IT",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0068",
+    "text": "SUPPORT TICKET [Legal]: Software license key request for PyCharm Pro. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Legal",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0050",
+    "text": "SUPPORT TICKET [HR]: Laptop screen flicker and battery power failure. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0077",
+    "text": "SUPPORT TICKET [HR]: Laptop screen flicker and battery power failure. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0063",
+    "text": "INVOICE #INV-2026-1059 from CloudServices LLC. Total Amount Due: $1579.41. Remit payment to finance department.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "CloudServices LLC",
+      "amount": 1579.41,
+      "invoice_number": "INV-2026-1059"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0085",
+    "text": "Bill receipt INV-2026-9648 - Acme Corp sum $7861.84 text with extraneous characters #$%^.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "Acme Corp",
+      "amount": 7861.84,
+      "invoice_number": "INV-2026-9648"
+    },
+    "difficulty": "noisy"
+  },
+  {
+    "sample_id": "SAMP-0118",
+    "text": "SUPPORT TICKET [Facilities]: Laptop screen flicker and battery power failure. Urgency level: LOW. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "low"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0011",
+    "text": "Purchase request summary for TechSupplies Inc estimating cost around $4432.27 for upcoming project.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "TechSupplies Inc",
+      "amount": 4432.27,
+      "invoice_number": "INV-2026-3067"
+    },
+    "difficulty": "ambiguous"
+  },
+  {
+    "sample_id": "SAMP-0192",
+    "text": "SUPPORT TICKET [IT]: Software license key request for PyCharm Pro. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "IT",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0186",
+    "text": "SUPPORT TICKET [HR]: Laptop screen flicker and battery power failure. Urgency level: LOW. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "low"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0016",
+    "text": "SUPPORT TICKET [HR]: Need password reset for corporate email account. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "HR",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0154",
+    "text": "SUPPORT TICKET [IT]: Software license key request for PyCharm Pro. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "IT",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0024",
+    "text": "SUPPORT TICKET [Facilities]: Need password reset for corporate email account. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0117",
+    "text": "SUPPORT TICKET [Legal]: Laptop screen flicker and battery power failure. Urgency level: HIGH. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Legal",
+      "urgency": "high"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0114",
+    "text": "Purchase request summary for OfficeDepot Ltd estimating cost around $10991.41 for upcoming project.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "OfficeDepot Ltd",
+      "amount": 10991.41,
+      "invoice_number": "INV-2026-8823"
+    },
+    "difficulty": "ambiguous"
+  },
+  {
+    "sample_id": "SAMP-0132",
+    "text": "Bill receipt INV-2026-3447 - OfficeDepot Ltd sum $6514.74 text with extraneous characters #$%^.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "OfficeDepot Ltd",
+      "amount": 6514.74,
+      "invoice_number": "INV-2026-3447"
+    },
+    "difficulty": "noisy"
+  },
+  {
+    "sample_id": "SAMP-0127",
+    "text": "INVOICE #INV-2026-6442 from OfficeDepot Ltd. Total Amount Due: $4306.13. Remit payment to finance department.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "OfficeDepot Ltd",
+      "amount": 4306.13,
+      "invoice_number": "INV-2026-6442"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0012",
+    "text": "SUPPORT TICKET [Facilities]: Software license key request for PyCharm Pro. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0067",
+    "text": "Bill receipt INV-2026-7978 - Acme Corp sum $9687.27 text with extraneous characters #$%^.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "Acme Corp",
+      "amount": 9687.27,
+      "invoice_number": "INV-2026-7978"
+    },
+    "difficulty": "noisy"
+  },
+  {
+    "sample_id": "SAMP-0020",
+    "text": "SUPPORT TICKET [Facilities]: Request access to financial quarterly report folder. Urgency level: LOW. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "Facilities",
+      "urgency": "low"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0074",
+    "text": "SUPPORT TICKET [IT]: Request access to financial quarterly report folder. Urgency level: NORMAL. Requesting assistance.",
+    "true_category": "service_request",
+    "extracted_fields": {
+      "department": "IT",
+      "urgency": "normal"
+    },
+    "difficulty": "clean"
+  },
+  {
+    "sample_id": "SAMP-0149",
+    "text": "Purchase request summary for Global Logistics estimating cost around $12257.17 for upcoming project.",
+    "true_category": "invoice",
+    "extracted_fields": {
+      "vendor": "Global Logistics",
+      "amount": 12257.17,
+      "invoice_number": "INV-2026-9725"
+    },
+    "difficulty": "ambiguous"
+  }
+]
