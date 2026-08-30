@@ -1,0 +1,4 @@
+Experimental Group,Accuracy (%),Macro F1 (%),Automation Rate (%),Human Escalation Rate (%),Unsafe Auto Rate (%),Avg Latency (ms)
+Group A: Rule-Only Baseline,88.89,82.63,91.11,0.0,71.11,0.06
+Group B: AI-Only (No Policy Gates),100.0,100.0,100.0,0.0,77.78,0.46
+Group C: Proposed Hybrid AI + Policy,100.0,100.0,20.0,80.0,13.33,0.49

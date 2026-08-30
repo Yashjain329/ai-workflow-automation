@@ -1,0 +1,5 @@
+Perturbation Level,Accuracy (%),Macro F1 (%),Macro Precision (%),Macro Recall (%),Avg AI Confidence
+0% (Clean Baseline),100.0,100.0,100.0,100.0,0.89
+10% Character Noise,100.0,100.0,100.0,100.0,0.8
+20% Character Noise,95.56,65.0,63.49,66.67,0.72
+30% Character Noise,93.33,63.52,62.12,65.28,0.65
