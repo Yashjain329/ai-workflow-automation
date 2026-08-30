@@ -1,4 +1,7 @@
-const API_BASE = '/api';
+// Dynamic API Base URL detection
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? '/api'
+    : 'http://localhost:8000/api';
 
 document.addEventListener('DOMContentLoaded', () => {
     refreshDashboard();
