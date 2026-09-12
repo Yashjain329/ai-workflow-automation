@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Security
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from backend.database import get_db
 from backend.models.db_models import WorkflowJob, Prediction, ApprovalTask
 from backend.schemas.pydantic_schemas import OperationalMetricsResponse
+from backend.auth import get_api_key
 
 router = APIRouter(prefix="/metrics", tags=["Operational Metrics"])
 
 @router.get("", response_model=OperationalMetricsResponse)
-def get_operational_metrics(db: Session = Depends(get_db)):
+def get_operational_metrics(db: Session = Depends(get_db), api_key: str = Security(get_api_key)):
     """
     Computes key dissertation research metrics: automation rate, escalation rate, failure rate, and average confidence.
     """

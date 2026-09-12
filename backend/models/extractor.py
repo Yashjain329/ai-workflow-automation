@@ -1,6 +1,8 @@
 import re
 from typing import Dict, Any
 
+from backend.config import settings
+
 KNOWN_DEPARTMENTS = ["IT", "HR", "Finance", "Facilities", "Legal", "Operations", "Security"]
 KNOWN_VENDORS = [
     "Acme Corp", "TechSupplies Inc", "Global Logistics", "CloudServices LLC", 
@@ -20,19 +22,19 @@ class FieldExtractor:
             # 1. Extract Amount
             amount_match = re.search(r'\$\s*([0-9,]+(?:\.[0-9]{1,2})?)', text)
             if not amount_match:
-                amount_match = re.search(r'(?:amount|total|due|sum|cost|balance|fee|fees|reimbursement)\s*[:\$]?\s*([0-9,]+(?:\.[0-9]{1,2})?)', text, re.IGNORECASE)
+                amount_match = re.search(r'(?:amount|total|due|sum|cost|balance|fee|fees|reimbursement)\s*[:$]?\s*([0-9,]+(?:\.[0-9]{1,2})?)', text, re.IGNORECASE)
             
             if amount_match:
                 try:
                     amount_str = amount_match.group(1).replace(",", "")
                     extracted["amount"] = float(amount_str)
-                    extracted["amount_confidence"] = 0.95
+                    extracted["amount_confidence"] = settings.EXTRACTOR_AMOUNT_CONFIDENCE_HIGH
                 except ValueError:
                     extracted["amount"] = 0.0
-                    extracted["amount_confidence"] = 0.0
+                    extracted["amount_confidence"] = settings.EXTRACTOR_AMOUNT_CONFIDENCE_ZERO
             else:
                 extracted["amount"] = None
-                extracted["amount_confidence"] = 0.0
+                extracted["amount_confidence"] = settings.EXTRACTOR_AMOUNT_CONFIDENCE_ZERO
 
             # 2. Extract Vendor
             vendor_found = None
@@ -51,10 +53,10 @@ class FieldExtractor:
 
             if vendor_found and vendor_found.lower() not in ["unknown", "unknown vendor", "unknown supplier"]:
                 extracted["vendor"] = vendor_found
-                extracted["vendor_confidence"] = 0.78 if is_ambiguous else 0.94
+                extracted["vendor_confidence"] = settings.EXTRACTOR_VENDOR_CONFIDENCE_AMBIGUOUS if is_ambiguous else settings.EXTRACTOR_VENDOR_CONFIDENCE_HIGH
             else:
                 extracted["vendor"] = "MISSING_VENDOR"
-                extracted["vendor_confidence"] = 0.0
+                extracted["vendor_confidence"] = settings.EXTRACTOR_VENDOR_CONFIDENCE_ZERO
 
             # 3. Extract Invoice Number
             inv_match = re.search(r'\b(INV-\d{4}-\d{4})\b', text, re.IGNORECASE)
@@ -63,22 +65,22 @@ class FieldExtractor:
 
             if inv_match:
                 extracted["invoice_number"] = inv_match.group(1).strip()
-                extracted["invoice_number_confidence"] = 0.95
+                extracted["invoice_number_confidence"] = settings.EXTRACTOR_INVOICE_NUMBER_CONFIDENCE_HIGH
             else:
                 extracted["invoice_number"] = "MISSING_INV_NUMBER"
-                extracted["invoice_number_confidence"] = 0.0
+                extracted["invoice_number_confidence"] = settings.EXTRACTOR_INVOICE_NUMBER_CONFIDENCE_ZERO
 
         elif category == "service_request":
             # 1. Extract Urgency
             if re.search(r'\b(urgent|critical|high|emergency|immediate)\b', text, re.IGNORECASE):
                 extracted["urgency"] = "high"
-                extracted["urgency_confidence"] = 0.95
+                extracted["urgency_confidence"] = settings.EXTRACTOR_URGENCY_CONFIDENCE_HIGH
             elif re.search(r'\b(low|minor)\b', text, re.IGNORECASE):
                 extracted["urgency"] = "low"
-                extracted["urgency_confidence"] = 0.90
+                extracted["urgency_confidence"] = settings.EXTRACTOR_URGENCY_CONFIDENCE_LOW
             else:
                 extracted["urgency"] = "normal"
-                extracted["urgency_confidence"] = 0.85
+                extracted["urgency_confidence"] = settings.EXTRACTOR_URGENCY_CONFIDENCE_NORMAL
 
             # 2. Extract Department
             dept_found = "General"
@@ -88,6 +90,6 @@ class FieldExtractor:
                     break
 
             extracted["department"] = dept_found
-            extracted["department_confidence"] = 0.92 if dept_found != "General" else 0.50
+            extracted["department_confidence"] = settings.EXTRACTOR_DEPARTMENT_CONFIDENCE_KNOWN if dept_found != "General" else settings.EXTRACTOR_DEPARTMENT_CONFIDENCE_GENERAL
 
         return extracted

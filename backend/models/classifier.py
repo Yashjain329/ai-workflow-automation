@@ -7,6 +7,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
+from backend.config import settings
+
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "tfidf_logreg_model.pkl")
 
 class RuleOnlyClassifier:
@@ -22,15 +24,15 @@ class RuleOnlyClassifier:
         invoice_keywords = ["invoice", "bill", "vendor", "payment", "amount due", "remit", "subtotal", "tax"]
         service_keywords = ["ticket", "support", "issue", "bug", "password reset", "laptop", "request", "urgency", "hr", "it"]
 
-        invoice_score = sum(2 if re.search(r'\b' + re.escape(kw) + r'\b', text_lower) else 0 for kw in invoice_keywords)
-        service_score = sum(2 if re.search(r'\b' + re.escape(kw) + r'\b', text_lower) else 0 for kw in service_keywords)
+        invoice_score = sum(2 if re.search(r'\\b' + re.escape(kw) + r'\\b', text_lower) else 0 for kw in invoice_keywords)
+        service_score = sum(2 if re.search(r'\\b' + re.escape(kw) + r'\\b', text_lower) else 0 for kw in service_keywords)
 
-        if re.search(r'\$\d+|\b\d+\.\d{2}\b', text_lower):
-            invoice_score += 3
+        if re.search(r'\\$\\d+|\\b\\d+\\.\\d{2}\\b', text_lower):
+            invoice_score += settings.CLASSIFIER_INVOICE_KEYWORD_BONUS
 
         total_score = invoice_score + service_score
         if total_score == 0:
-            return "unknown", 0.40
+            return "unknown", settings.CLASSIFIER_UNKNOWN_CONFIDENCE
 
         if invoice_score > service_score:
             confidence = min(0.95, 0.60 + (invoice_score / (total_score + 2)) * 0.40)
@@ -83,7 +85,7 @@ class MLTaskClassifier:
         probs = self.pipeline.predict_proba([text])[0]
         classes = self.pipeline.classes_
         top_idx = probs.argmax()
-        
+
         predicted_cat = str(classes[top_idx])
         confidence = round(float(probs[top_idx]), 2)
 

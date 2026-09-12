@@ -18,12 +18,12 @@ class PolicyRules:
             amount_conf = extracted_fields.get("amount_confidence", 1.0)
 
             # Safety Rule 1: Unknown or missing vendor identity
-            if vendor in ["MISSING_VENDOR", "Unknown Vendor", "Unknown", None] or vendor_conf < 0.80:
+            if vendor in ["MISSING_VENDOR", "Unknown Vendor", "Unknown", None] or vendor_conf < settings.RULES_VENDOR_CONFIDENCE_THRESHOLD:
                 rules_applied.append("RULE_UNKNOWN_VENDOR: Vendor identity unverified or extraction confidence low")
                 return "high", rules_applied
 
             # Safety Rule 2: Invalid or missing amount
-            if amount is None or amount <= 0.0 or amount_conf < 0.80:
+            if amount is None or amount <= 0.0 or amount_conf < settings.RULES_AMOUNT_CONFIDENCE_THRESHOLD:
                 rules_applied.append("RULE_INVALID_AMOUNT: Invoice amount missing, zero, or extraction uncertain")
                 return "high", rules_applied
 
@@ -33,7 +33,7 @@ class PolicyRules:
                 return "medium", rules_applied
 
             # Safety Rule 4: Ambiguity or mixed-domain indicator
-            if vendor_conf < 0.90:
+            if vendor_conf < settings.RULES_VENDOR_CONFIDENCE_AMBIGUITY_THRESHOLD:
                 rules_applied.append("RULE_AMBIGUOUS_EXTRACTION: Field extraction confidence requires human validation")
                 return "medium", rules_applied
 
@@ -51,7 +51,7 @@ class PolicyRules:
                 return "medium", rules_applied
 
             # Safety Rule 2: Unspecified or uncertain department
-            if dept == "General" or dept_conf < 0.80:
+            if dept == "General" or dept_conf < settings.RULES_DEPARTMENT_CONFIDENCE_THRESHOLD:
                 rules_applied.append("RULE_UNSPECIFIED_DEPARTMENT: Department routing unconfirmed")
                 return "medium", rules_applied
 

@@ -1,20 +1,23 @@
 import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Security
 from sqlalchemy.orm import Session
 from typing import List
 
 from backend.database import get_db
 from backend.models.db_models import WorkflowJob, Prediction, Decision, ActionLog, ApprovalTask
 from backend.schemas.pydantic_schemas import (
-    JobCreate, WorkflowJobResponse, JobDetailResponse, 
+    JobCreate, WorkflowJobResponse, JobDetailResponse,
     PredictionResponse, DecisionResponse, ActionLogResponse
 )
 from backend.workflow.engine import WorkflowEngine
+from backend.auth import get_api_key
+from backend.config import settings
+from backend.tasks import process_workflow_job
 
 router = APIRouter(prefix="/jobs", tags=["Workflow Jobs"])
 
 @router.post("", response_model=WorkflowJobResponse)
-def create_job(payload: JobCreate, db: Session = Depends(get_db)):
+def create_job(payload: JobCreate, db: Session = Depends(get_db), api_key: str = Security(get_api_key)):
     """
     Submits a new workflow job for processing.
     """
@@ -30,13 +33,22 @@ def create_job(payload: JobCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(job)
 
-    # Process job using workflow engine
-    engine = WorkflowEngine(db)
-    processed_job = engine.process_job(job_id)
-    return processed_job
+    # Process job using workflow engine or Celery based on configuration
+    if settings.USE_CELERY:
+        # Trigger asynchronous processing via Celery
+        task = process_workflow_job.delay(job.id)  # Note: we pass the internal ID, not job_id
+        # For now, we return the job immediately and the client can poll for status
+        # In a more advanced implementation, we would return a task ID for tracking
+        db.refresh(job)  # Ensure we have the latest state
+        return job
+    else:
+        # Synchronous processing (original behavior)
+        engine = WorkflowEngine(db)
+        processed_job = engine.process_job(job.id)
+        return processed_job
 
 @router.get("", response_model=List[WorkflowJobResponse])
-def list_jobs(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def list_jobs(skip: int = 0, limit: int = 50, db: Session = Depends(get_db), api_key: str = Security(get_api_key)):
     """
     Lists all submitted workflow jobs.
     """
@@ -44,7 +56,7 @@ def list_jobs(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
     return jobs
 
 @router.get("/{job_id}", response_model=JobDetailResponse)
-def get_job_detail(job_id: str, db: Session = Depends(get_db)):
+def get_job_detail(job_id: str, db: Session = Depends(get_db), api_key: str = Security(get_api_key)):
     """
     Retrieves full execution trace, prediction, decision, and logs for a job.
     """
@@ -77,7 +89,7 @@ def get_job_detail(job_id: str, db: Session = Depends(get_db)):
     )
 
 @router.post("/{job_id}/retry", response_model=WorkflowJobResponse)
-def retry_job(job_id: str, db: Session = Depends(get_db)):
+def retry_job(job_id: str, db: Session = Depends(get_db), api_key: str = Security(get_api_key)):
     """
     Retries processing for a failed or rejected job.
     """
@@ -89,5 +101,11 @@ def retry_job(job_id: str, db: Session = Depends(get_db)):
     job.error_code = None
     db.commit()
 
-    engine = WorkflowEngine(db)
-    return engine.process_job(job_id)
+    # Retry using workflow engine or Celery based on configuration
+    if settings.USE_CELERY:
+        task = process_workflow_job.delay(job.id)
+        db.refresh(job)
+        return job
+    else:
+        engine = WorkflowEngine(db)
+        return engine.process_job(job.id)
