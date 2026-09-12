@@ -36,7 +36,7 @@ def create_job(payload: JobCreate, db: Session = Depends(get_db), api_key: str =
     # Process job using workflow engine or Celery based on configuration
     if settings.USE_CELERY:
         # Trigger asynchronous processing via Celery
-        task = process_workflow_job.delay(job.id)  # Note: we pass the internal ID, not job_id
+        task = process_workflow_job.delay(job.job_id)  # Pass the business job_id string
         # For now, we return the job immediately and the client can poll for status
         # In a more advanced implementation, we would return a task ID for tracking
         db.refresh(job)  # Ensure we have the latest state
@@ -44,7 +44,7 @@ def create_job(payload: JobCreate, db: Session = Depends(get_db), api_key: str =
     else:
         # Synchronous processing (original behavior)
         engine = WorkflowEngine(db)
-        processed_job = engine.process_job(job.id)
+        processed_job = engine.process_job(job.job_id)
         return processed_job
 
 @router.get("", response_model=List[WorkflowJobResponse])
@@ -103,9 +103,9 @@ def retry_job(job_id: str, db: Session = Depends(get_db), api_key: str = Securit
 
     # Retry using workflow engine or Celery based on configuration
     if settings.USE_CELERY:
-        task = process_workflow_job.delay(job.id)
+        task = process_workflow_job.delay(job.job_id)
         db.refresh(job)
         return job
     else:
         engine = WorkflowEngine(db)
-        return engine.process_job(job.id)
+        return engine.process_job(job.job_id)

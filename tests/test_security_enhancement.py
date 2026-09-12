@@ -60,11 +60,28 @@ def test_auth_module():
     assert isinstance(API_KEYS, dict)
     assert isinstance(ROLE_PERMISSIONS, dict)
     
-    # Check that they have the expected structure from .env.example
-    # Note: These will be the default values since we haven't set env vars
-    assert "admin-secret-key-change-in-production" in API_KEYS
-    assert API_KEYS["admin-secret-key-change-in-production"] == "admin"
+    # Check that they have the expected structure from the test environment
+    # Note: We are setting API_KEY_ADMIN, API_KEY_OPERATOR, API_KEY_VIEWER in conftest
+    assert "test-admin-key" in API_KEYS
+    assert API_KEYS["test-admin-key"] == "admin"
+    assert "test-operator-key" in API_KEYS
+    assert API_KEYS["test-operator-key"] == "operator"
+    assert "test-viewer-key" in API_KEYS
+    assert API_KEYS["test-viewer-key"] == "viewer"
+    
     assert "admin" in ROLE_PERMISSIONS
     assert "read" in ROLE_PERMISSIONS["admin"]
+    assert "write" in ROLE_PERMISSIONS["admin"]
+    assert "delete" in ROLE_PERMISSIONS["admin"]
+    assert "approve" in ROLE_PERMISSIONS["admin"]
+    assert "configure" in ROLE_PERMISSIONS["admin"]
+    
+    assert "operator" in ROLE_PERMISSIONS
+    assert "read" in ROLE_PERMISSIONS["operator"]
+    assert "write" in ROLE_PERMISSIONS["operator"]
+    assert "approve" in ROLE_PERMISSIONS["operator"]
+    
+    assert "viewer" in ROLE_PERMISSIONS
+    assert "read" in ROLE_PERMISSIONS["viewer"]
     
     print("Auth module test passed.")

@@ -14,7 +14,7 @@ from backend.database import SessionLocal
 from backend.models.monitoring_models import (
     ModelPerformanceMetrics, DataDriftMetrics, SystemPerformanceMetrics
 )
-from backend.models.db_models import WorkflowJob, Prediction, Decision, ApprovalTask
+from backend.models.db_models import WorkflowJob, Prediction, Decision, ApprovalTask, ActionLog
 from backend.workflow.engine import WorkflowEngine
 
 logger = logging.getLogger(__name__)

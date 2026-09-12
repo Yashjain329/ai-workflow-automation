@@ -35,11 +35,11 @@ def test_create_and_retrieve_job_integration():
     response = client.get(f"/api/jobs/{job_id}", headers=AUTH_HEADERS)
     assert response.status_code == 200
     retrieved_job = response.json()
-    assert retrieved_job["job_id"] == job_id
-    assert retrieved_job["source"] == "api"
-    assert retrieved_job["raw_payload"] == "INVOICE #12345 FROM ACME CORP FOR $1500.00"
+    assert retrieved_job["job"]["job_id"] == job_id
+    assert retrieved_job["job"]["source"] == "api"
+    assert retrieved_job["job"]["raw_payload"] == "INVOICE #12345 FROM ACME CORP FOR $1500.00"
     # The job should have been processed through the workflow
-    assert retrieved_job["status"] in ["RECEIVED", "VALIDATING", "CLASSIFIED", "EXTRACTED", "DECIDING", 
+    assert retrieved_job["job"]["status"] in ["RECEIVED", "VALIDATING", "CLASSIFIED", "EXTRACTED", "DECIDING", 
                                      "APPROVAL_PENDING", "EXECUTING", "COMPLETED", "FAILED", "AUDITED"]
 
 def test_metrics_endpoint_integration():

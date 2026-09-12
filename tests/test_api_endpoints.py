@@ -34,9 +34,9 @@ def test_create_and_fetch_job():
     response = client.get(f"/api/jobs/{job_id}", headers=AUTH_HEADERS)
     assert response.status_code == 200
     fetched_job = response.json()
-    assert fetched_job["job_id"] == job_id
-    assert fetched_job["source"] == "api"
-    assert fetched_job["raw_payload"] == "INVOICE #1001 from Acme Corp for $1200.00"
+    assert fetched_job["job"]["job_id"] == job_id
+    assert fetched_job["job"]["source"] == "api"
+    assert fetched_job["job"]["raw_payload"] == "INVOICE #1001 from Acme Corp for $1200.00"
 
 def test_metrics_endpoint():
     """Test the metrics endpoint."""

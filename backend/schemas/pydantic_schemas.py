@@ -21,6 +21,7 @@ class WorkflowJobResponse(BaseModel):
     status: str
     human_intervention: bool
     error_code: Optional[str] = None
+    raw_payload: Optional[str] = None
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
