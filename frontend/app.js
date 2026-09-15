@@ -1,9 +1,9 @@
 // Dynamic API Base URL detection
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? '/api'
-    : 'http://localhost:8000/api';
+// On localhost: use relative paths (proxied by Vite dev server or Netlify proxy)
+// On production (Netlify): use relative paths (proxied by Netlify redirects to backend)
+const API_BASE = '/api';
 
-// WebSocket URL
+// WebSocket URL - on localhost use local ws, on production use wss via Netlify proxy
 const WS_BASE = (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws';
 
 document.addEventListener('DOMContentLoaded', () => {
